@@ -1,0 +1,146 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -48
+      ],
+      "id": "4a947eba-9025-4f53-a8ba-bbfaff81cdc7",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:\\Users\\FaithNhlamuloKubayi\\.n8n-files\\AI Engineer.pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        -48
+      ],
+      "id": "597a705d-560d-4424-90a7-e902896210ee",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        -48
+      ],
+      "id": "2755b9ca-9423-4e35-8a5b-ff34907bef40",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Answer user's questions based on the document below: {{ $json.text}}",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "what is the fourth step? also answer the following questions. What does an AI Engineer actually do? What is AI Engineer? What does their day-to-day work look like? What technologies do AI Engineers use? AI Engineer vs Data Scientist vs ML Engineer"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        288,
+        -48
+      ],
+      "id": "a8f32a4e-d9dc-4e51-906b-73521c9f94e0",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        224,
+        160
+      ],
+      "id": "0f3bd76b-3be5-4ab3-9b5e-92101e523852",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "DPYbgbDhXJD0pOcN",
+          "name": "Test_Case_Generator"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "27101970-c00f-4746-8ae2-16723d58c672",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "39fe109e9a3b7acb9eb615323169183e962fc5f64bc87beb0b7f76f1814dc7c5"
+  },
+  "id": "bRhSMvOQRin9AlBx",
+  "tags": []
+}
